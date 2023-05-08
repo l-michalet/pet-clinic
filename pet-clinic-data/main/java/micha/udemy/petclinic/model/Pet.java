@@ -1,8 +1,8 @@
-package com.example.petclinic.model;
+package micha.udemy.petclinic.model;
 
 import java.time.LocalDate;
 
-public class Vet {
+public class Pet {
 
     private PetType petType;
     private Owner owner;
