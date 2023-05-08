@@ -1,11 +1,13 @@
 package micha.udemy.petclinic.service.map;
 
 import micha.udemy.petclinic.model.Owner;
-import micha.udemy.petclinic.service.CrudService;
+import micha.udemy.petclinic.service.OwnerService;
+import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
-public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements CrudService<Owner, Long> {
+@Service
+public class OwnerMapService extends AbstractMapService<Owner, Long> implements OwnerService {
 
     @Override
     public Set<Owner> findAll() {

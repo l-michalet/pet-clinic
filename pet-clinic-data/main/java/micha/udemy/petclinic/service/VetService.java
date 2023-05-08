@@ -1,7 +1,7 @@
 package micha.udemy.petclinic.service;
 
-import micha.udemy.petclinic.model.Owner;
+import micha.udemy.petclinic.model.Vet;
 
-public interface VetService extends CrudService<Owner, Long> {
+public interface VetService extends CrudService<Vet, Long> {
 
 }

@@ -1,11 +1,13 @@
 package micha.udemy.petclinic.service.map;
 
 import micha.udemy.petclinic.model.Vet;
-import micha.udemy.petclinic.service.CrudService;
+import micha.udemy.petclinic.service.VetService;
+import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
-public class VetServiceMap extends AbstractMapService<Vet, Long> implements CrudService<Vet, Long> {
+@Service
+public class VetMapService extends AbstractMapService<Vet, Long> implements VetService {
 
     @Override
     public Set<Vet> findAll() {
