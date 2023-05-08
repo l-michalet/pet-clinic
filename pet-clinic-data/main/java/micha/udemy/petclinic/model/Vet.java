@@ -2,7 +2,7 @@ package micha.udemy.petclinic.model;
 
 import java.time.LocalDate;
 
-public class Vet {
+public class Vet extends Person {
 
     private PetType petType;
     private Owner owner;
