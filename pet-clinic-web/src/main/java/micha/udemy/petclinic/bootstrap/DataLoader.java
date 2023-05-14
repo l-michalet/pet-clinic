@@ -1,6 +1,7 @@
 package micha.udemy.petclinic.bootstrap;
 
 import micha.udemy.petclinic.model.Owner;
+import micha.udemy.petclinic.model.Pet;
 import micha.udemy.petclinic.model.Vet;
 import micha.udemy.petclinic.service.OwnerService;
 import micha.udemy.petclinic.service.VetService;

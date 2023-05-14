@@ -1,34 +1,16 @@
 package micha.udemy.petclinic.model;
 
-import java.time.LocalDate;
+import java.util.Set;
 
 public class Vet extends Person {
 
-    private PetType petType;
-    private Owner owner;
-    private LocalDate localDate;
+    private Set<Specialty> specialties;
 
-    public PetType getPetType() {
-        return petType;
+    public Set<Specialty> getSpecialties() {
+        return specialties;
     }
 
-    public void setPetType(PetType petType) {
-        this.petType = petType;
-    }
-
-    public Owner getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Owner owner) {
-        this.owner = owner;
-    }
-
-    public LocalDate getLocalDate() {
-        return localDate;
-    }
-
-    public void setLocalDate(LocalDate localDate) {
-        this.localDate = localDate;
+    public void setSpecialties(Set<Specialty> specialties) {
+        this.specialties = specialties;
     }
 }
