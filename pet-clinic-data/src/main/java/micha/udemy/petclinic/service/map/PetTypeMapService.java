@@ -2,9 +2,11 @@ package micha.udemy.petclinic.service.map;
 
 import micha.udemy.petclinic.model.PetType;
 import micha.udemy.petclinic.service.PetTypeService;
+import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
+@Service
 public class PetTypeMapService extends AbstractMapService<PetType, Long> implements PetTypeService {
 
     @Override
@@ -24,11 +26,11 @@ public class PetTypeMapService extends AbstractMapService<PetType, Long> impleme
 
     @Override
     public PetType save(PetType petType) {
-        return save(petType);
+        return super.save(petType);
     }
 
     @Override
     public PetType findById(Long id) {
-        return findById(id);
+        return super.findById(id);
     }
 }
