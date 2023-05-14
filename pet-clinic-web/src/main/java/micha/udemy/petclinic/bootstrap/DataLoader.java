@@ -3,14 +3,17 @@ package micha.udemy.petclinic.bootstrap;
 import micha.udemy.petclinic.model.Owner;
 import micha.udemy.petclinic.model.Pet;
 import micha.udemy.petclinic.model.PetType;
+import micha.udemy.petclinic.model.Specialty;
 import micha.udemy.petclinic.model.Vet;
 import micha.udemy.petclinic.service.OwnerService;
 import micha.udemy.petclinic.service.PetTypeService;
+import micha.udemy.petclinic.service.SpecialtyService;
 import micha.udemy.petclinic.service.VetService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -18,19 +21,25 @@ public class DataLoader implements CommandLineRunner {
     private final OwnerService ownerService;
     private final VetService vetService;
     private final PetTypeService petTypeService;
+    private final SpecialtyService specialtyService;
 
-    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService) {
+    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService, SpecialtyService specialtyService) {
         this.ownerService = ownerService;
         this.vetService = vetService;
         this.petTypeService = petTypeService;
+        this.specialtyService = specialtyService;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        loadData();
+        int count = petTypeService.findAll().size();
+        if (count == 0) {
+            loadOwnersData();
+            loadVetsData();
+        }
     }
 
-    private void loadData() {
+    private void loadOwnersData() {
         PetType dog = new PetType();
         dog.setName("Dog");
         PetType savedDogType = petTypeService.save(dog);
@@ -42,19 +51,23 @@ public class DataLoader implements CommandLineRunner {
         createAndSaveOwner(1L, "Michael", "Weston", "123 Brickerel", "Miami", "123456789", savedDogType, "Rosco", LocalDate.now());
         createAndSaveOwner(2L, "Fiona", "Glenanne", "45 Brickerel", "Miami", "123456790", savedCatType, "Garfield", LocalDate.now());
         System.out.println("Loaded Owners....");
+    }
 
-        Vet vet1 = new Vet();
-        vet1.setId(1L);
-        vet1.setFirstName("Sam");
-        vet1.setLastName("Axe");
-        vetService.save(vet1);
+    private void loadVetsData() {
+        Specialty radiology = new Specialty();
+        radiology.setDesription("Radiology");
+        specialtyService.save(radiology);
 
-        Vet vet2 = new Vet();
-        vet2.setId(2L);
-        vet2.setFirstName("Jessie");
-        vet2.setLastName("Porter");
-        vetService.save(vet2);
+        Specialty surgery = new Specialty();
+        surgery.setDesription("Surgery");
+        specialtyService.save(surgery);
 
+        Specialty dentistry = new Specialty();
+        dentistry.setDesription("Dentistry");
+        specialtyService.save(dentistry);
+
+        createAndSaveVet(1L, "Sam", "Axe", Set.of(radiology));
+        createAndSaveVet(2L, "Jessie", "Porter", Set.of(surgery, dentistry));
         System.out.println("Loaded Vets....");
     }
 
@@ -75,5 +88,14 @@ public class DataLoader implements CommandLineRunner {
         owner.getPets().add(pet);
 
         ownerService.save(owner);
+    }
+
+    private void createAndSaveVet(Long id, String firstName, String lastName, Set<Specialty> specialties) {
+        Vet vet = new Vet();
+        vet.setId(id);
+        vet.setFirstName(firstName);
+        vet.setLastName(lastName);
+        vet.setSpecialties(specialties);
+        vetService.save(vet);
     }
 }
