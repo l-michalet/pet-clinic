@@ -5,10 +5,13 @@ import micha.udemy.petclinic.model.Pet;
 import micha.udemy.petclinic.model.PetType;
 import micha.udemy.petclinic.model.Specialty;
 import micha.udemy.petclinic.model.Vet;
+import micha.udemy.petclinic.model.Visit;
 import micha.udemy.petclinic.service.OwnerService;
+import micha.udemy.petclinic.service.PetService;
 import micha.udemy.petclinic.service.PetTypeService;
 import micha.udemy.petclinic.service.SpecialtyService;
 import micha.udemy.petclinic.service.VetService;
+import micha.udemy.petclinic.service.VisitService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -20,14 +23,18 @@ public class DataLoader implements CommandLineRunner {
 
     private final OwnerService ownerService;
     private final VetService vetService;
+    private final PetService petService;
     private final PetTypeService petTypeService;
     private final SpecialtyService specialtyService;
+    private final VisitService visitService;
 
-    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService, SpecialtyService specialtyService) {
+    public DataLoader(OwnerService ownerService, VetService vetService, PetService petService, PetTypeService petTypeService, SpecialtyService specialtyService, VisitService visitService) {
         this.ownerService = ownerService;
         this.vetService = vetService;
+        this.petService = petService;
         this.petTypeService = petTypeService;
         this.specialtyService = specialtyService;
+        this.visitService = visitService;
     }
 
     @Override
@@ -48,8 +55,11 @@ public class DataLoader implements CommandLineRunner {
         cat.setName("Cat");
         PetType savedCatType = petTypeService.save(cat);
 
-        createAndSaveOwner(1L, "Michael", "Weston", "123 Brickerel", "Miami", "123456789", savedDogType, "Rosco", LocalDate.now());
-        createAndSaveOwner(2L, "Fiona", "Glenanne", "45 Brickerel", "Miami", "123456790", savedCatType, "Garfield", LocalDate.now());
+        OwnerAndPet michaelRosco = createAndSaveOwnerAndPet(1L, "Michael", "Weston", "123 Brickerel", "Miami", "123456789", savedDogType, "Rosco", LocalDate.now());
+        OwnerAndPet fionaGarfield = createAndSaveOwnerAndPet(2L, "Fiona", "Glenanne", "45 Brickerel", "Miami", "123456790", savedCatType, "Garfield", LocalDate.now());
+
+        createAndSaveVisit(1L, michaelRosco.getPet(), LocalDate.now(), "Ate all the cheese");
+        createAndSaveVisit(2L, fionaGarfield.getPet(), LocalDate.now(), "Sneezy kitty");
         System.out.println("Loaded Owners....");
     }
 
@@ -71,7 +81,7 @@ public class DataLoader implements CommandLineRunner {
         System.out.println("Loaded Vets....");
     }
 
-    private void createAndSaveOwner(Long id, String firstName, String lastName, String address, String city, String telephone, PetType petType, String petName, LocalDate birthDate) {
+    private OwnerAndPet createAndSaveOwnerAndPet(Long id, String firstName, String lastName, String address, String city, String telephone, PetType petType, String petName, LocalDate birthDate) {
         Owner owner = new Owner();
         owner.setId(id);
         owner.setFirstName(firstName);
@@ -85,17 +95,42 @@ public class DataLoader implements CommandLineRunner {
         pet.setOwner(owner);
         pet.setBirthDate(birthDate);
         pet.setName(petName);
-        owner.getPets().add(pet);
+        petService.save(pet);
 
+        owner.getPets().add(pet);
         ownerService.save(owner);
+        return new OwnerAndPet(owner, pet);
     }
 
-    private void createAndSaveVet(Long id, String firstName, String lastName, Set<Specialty> specialties) {
+    private Vet createAndSaveVet(Long id, String firstName, String lastName, Set<Specialty> specialties) {
         Vet vet = new Vet();
         vet.setId(id);
         vet.setFirstName(firstName);
         vet.setLastName(lastName);
         vet.setSpecialties(specialties);
-        vetService.save(vet);
+        return vetService.save(vet);
+    }
+
+    private Visit createAndSaveVisit(Long id, Pet pet, LocalDate date, String description) {
+        Visit visit = new Visit();
+        visit.setId(id);
+        visit.setPet(pet);
+        visit.setDate(date);
+        visit.setDescription(description);
+        return visitService.save(visit);
+    }
+
+    class OwnerAndPet {
+        Owner owner;
+        Pet pet;
+
+        public OwnerAndPet(Owner owner, Pet pet) {
+            this.owner = owner;
+            this.pet = pet;
+        }
+
+        public Pet getPet() {
+            return pet;
+        }
     }
 }
