@@ -55,15 +55,15 @@ public class DataLoader implements CommandLineRunner {
 
     private void loadVetsData() {
         Specialty radiology = new Specialty();
-        radiology.setDesription("Radiology");
+        radiology.setDescription("Radiology");
         specialtyService.save(radiology);
 
         Specialty surgery = new Specialty();
-        surgery.setDesription("Surgery");
+        surgery.setDescription("Surgery");
         specialtyService.save(surgery);
 
         Specialty dentistry = new Specialty();
-        dentistry.setDesription("Dentistry");
+        dentistry.setDescription("Dentistry");
         specialtyService.save(dentistry);
 
         createAndSaveVet(1L, "Sam", "Axe", Set.of(radiology));

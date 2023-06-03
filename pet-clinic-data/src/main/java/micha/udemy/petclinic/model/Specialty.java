@@ -1,14 +1,21 @@
 package micha.udemy.petclinic.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "specialties")
 public class Specialty extends BaseEntity {
 
-    private String desription;
+    @Column(name = "description")
+    private String description;
 
-    public String getDesription() {
-        return desription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesription(String desription) {
-        this.desription = desription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
