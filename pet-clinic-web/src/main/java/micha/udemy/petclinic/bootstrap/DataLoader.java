@@ -91,14 +91,15 @@ public class DataLoader implements CommandLineRunner {
         owner.setTelephone(telephone);
 
         Pet pet = new Pet();
+        pet.setId(id);
         pet.setPetType(petType);
         pet.setOwner(owner);
         pet.setBirthDate(birthDate);
         pet.setName(petName);
-        petService.save(pet);
 
         owner.getPets().add(pet);
         ownerService.save(owner);
+        petService.save(pet);
         return new OwnerAndPet(owner, pet);
     }
 

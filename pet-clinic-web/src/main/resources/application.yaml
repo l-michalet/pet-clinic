@@ -1,3 +1,5 @@
 spring:
   messages:
     baseName: messages/messages
+  profiles:
+    active: jpa
